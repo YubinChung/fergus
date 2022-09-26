@@ -1,0 +1,73 @@
+@import "../../styles/modules/variables";
+@import "../../styles/modules/mixins";
+
+.job-item{
+  @include boxShadow();
+  background-color:$white;
+  padding:2rem;
+  border-radius: 10px;
+  margin-bottom:1rem;
+
+  &-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+    .job-item-title{
+      display: flex;
+      h3{
+        margin:0;
+      }
+      .button-icon{
+        margin-left:0.5rem;
+      }
+    }
+  }
+
+  &-status{
+    &.status-scheduled{
+      @include status($primary, $white)
+    }
+    &.status-active{
+      @include status($green, $white)
+    }
+    &.status-to-priced{
+      @include status($orange, $white)
+    }
+    &.status-invoicing{
+      @include status($yellow, $white)
+    }
+    &.status-completed{
+      @include status($lightGrey, $text)
+    }
+  }
+
+  &-meta{
+    padding-bottom: 1rem;
+    span {
+      display: inline-block;
+      margin-right: 2rem;
+      strong, .icon {
+        margin-right: 0.5rem;
+      }
+    }
+    @include tablet {
+      span:first-child{
+        display: block;
+        padding-bottom: 0.5em;}
+    }
+  } 
+
+  &-note {
+    strong {
+      display: block;
+      padding-bottom: 0.5rem;
+    }
+    p {
+      margin-top: 0;
+      &:last-child{
+        margin-bottom:0;
+      }
+    }
+  }
+}

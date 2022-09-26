@@ -1,0 +1,78 @@
+@import "./modules/variables";
+@import "./modules/mixins";
+
+html {
+  @include box-sizing(border-box);
+  height: 100% !important;
+}
+body, textarea {
+  font-family: $mainFont;
+  height: 100%;
+  margin:0 auto;
+  background-color: $lightGrey;
+  line-height: 1.5rem;
+}
+
+.button:not(.button-icon) {
+  @include button($primary);
+
+  &[type="submit"]{
+    width: 100%;
+    padding: 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+}
+.button-icon{
+  @include iconButton();
+}
+.monogram-title{
+  @include iconTitle();
+}
+.color-primary{color:$primary}
+.form-input{
+  @include inputText();
+  min-width: 200px;
+}
+.hidden{display:none;}
+
+.ReactModal__Overlay{
+  background-color: rgba(0,0,0,0.25)!important;
+}
+.modal-popup{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80%;
+  transform: translate(-50%, -50%);
+  background: $white;
+  border-radius: 10px;
+  padding: 2rem;
+  .button-icon{
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 1rem;
+  }
+  @include tablet {
+    width: 50%;
+  }
+}
+
+.select_wrap {
+  position: relative;
+  display: block;
+  height: 1rem;
+  select {
+    border: none;
+    position: absolute;
+    top: 0;
+    left: 1rem;
+    right: 1rem;
+    bottom: 0;
+    height: 100%;
+    width: calc(100% - 2rem);
+    cursor: pointer;
+    outline: none;
+  }
+}

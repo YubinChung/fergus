@@ -1,0 +1,13 @@
+@import "../../styles/app.scss";
+.jobform {
+  .input-wrapper {
+    label {
+      display: block;
+    }
+    .form-input{
+      width:calc(100% - 1rem);
+      margin: 0.5rem 0;
+    }
+    
+  }
+}

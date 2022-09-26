@@ -1,0 +1,22 @@
+@import "../../../styles/modules/variables";
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.3rem 1.65rem;
+  background: $white;
+  &-title {
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  &-logo {
+    width: 125px;
+    img {
+      display:block;
+      width:100%;
+    }
+  }
+}

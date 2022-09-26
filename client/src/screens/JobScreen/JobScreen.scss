@@ -1,0 +1,28 @@
+@import "../../styles/app.scss";
+
+.job-screen{
+  margin: 0 auto;
+  padding:2rem 0;
+  width: 80%;
+  @include tablet {
+    max-width: 70%;
+  }
+
+  &-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .sorting_wrap{
+    padding-bottom:1rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    label{
+      font-size:0.8rem;
+      color:$blueGrey;
+      padding-right:0.5rem;
+    }
+  }
+}

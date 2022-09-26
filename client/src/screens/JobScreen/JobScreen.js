@@ -14,15 +14,20 @@ const JobScreen = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   useEffect(() => {
-    async function fetchData() {
-      const result = await axios('http://localhost:3000/api/jobs/all');
-      setJobs(result.data.job)
-    }
-    fetchData();
+    getJobs();
   }, []);
 
-  const addJob = () => {
+  const getJobs = async () => {
+    const result = await axios('http://localhost:3000/api/jobs/all');
+    setJobs(result.data.job)
+  }
+
+  const openModal = () => {
     setModalIsOpen(true); // open Modal popup
+  }
+
+  const closeModal = () => {
+    setModalIsOpen(false); // close Modal popup
   }
 
   const handleSorting = (sort) => {
@@ -36,7 +41,7 @@ const JobScreen = () => {
     <div className="job-screen">
       <div className="job-screen-header">
         <h2>Job List</h2>
-        <button onClick={addJob} className="button">Add +</button>
+        <button onClick={openModal} className="button">Add +</button>
       </div>
       <div className="sorting_wrap">
         <label htmlFor="sort_by">Sort by:</label>
@@ -52,7 +57,7 @@ const JobScreen = () => {
         <button className="button-icon" onClick={()=> setModalIsOpen(false)}>
           <img src={IconClose} alt="Close icon" />
         </button>
-        <Jobform item={null} />
+        <Jobform item={null} handleClose={closeModal} handleNext={getJobs} />
       </Modal>
     </div>
   );

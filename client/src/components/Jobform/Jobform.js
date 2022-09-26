@@ -10,9 +10,9 @@ const Jobform = props => {
   const name = props.item ? props.item.name : '';
   const title = props.item ? props.item.title : '';
   const status = props.item ? props.item.status : 'scheduled';
-  const phone = props.item ? props.item.phone : '';
-  const email = props.item ? props.item.email : '';
-  const note = props.item ? props.item.note : '';
+  const phone = props.item ? props.item.phone : undefined;
+  const email = props.item ? props.item.email : undefined;
+  const note = props.item ? props.item.note : undefined;
 
   const [formValue, setformValue] = useState({
     name: name,
@@ -32,39 +32,55 @@ const Jobform = props => {
 
   const jobStatus = ['scheduled', 'active', 'invoicing', 'to priced', 'completed'];
 
-  const submitForm = () => {
-    const checkData = () => {
-      let hasInvalidData = false;
+  const checkData = (e) => {
+    let hasInvalidData = false;
+    e.preventDefault();
 
-      // Check form data - all fields are required.
-      for (const property in formValue) {
-        if (!hasInvalidData && formValue[property] === '' ){
-          hasInvalidData = true;
-        }
-      }
-      
-      if (!hasInvalidData){
-        fetchData();
-      } else {
-        alert('Please enter all mandatory fields.');
-        return false;
+    // Check form data - all fields are required.
+    for (const property in formValue) {
+      if (!hasInvalidData && formValue[property] === '' ){
+        hasInvalidData = true;
       }
     }
-
-    async function fetchData() {
-      try {
-        // Check all form data
-        
-        isEdit && await axios.put(`http://localhost:3000/api/jobs/${_id}`,formValue) // Edit Job
-        !isEdit && await axios.post(`http://localhost:3000/api/jobs`,formValue)  // Add Job
-       
-      } catch(error) {
-        console.log('Job form submission error', error);
-      }
+    
+    if (!hasInvalidData){
+      submitForm();
+    } else {
+      alert('Please enter all mandatory fields.');
     }
-    checkData();
   }
 
+  const submitForm = async () => {
+    try {
+      // Edit Job
+      isEdit && await axios.put(`http://localhost:3000/api/jobs/${_id}`,formValue).then(()=>{
+        alert('Job is updated.');
+        closeModal();
+        props.handleNext()
+      }) 
+
+      // Add Job
+      !isEdit && await axios.post(`http://localhost:3000/api/jobs`,formValue).then(()=>{
+        alert('Job is added.');
+        closeModal();
+        props.handleNext();
+      }) 
+
+    } catch(error) {
+      console.log('Job form submission error', error);
+    }
+  }
+
+  const closeModal = () => {
+    props.handleClose();
+  }
+
+  const removeJob = async () => {
+    await axios.delete(`http://localhost:3000/api/jobs/${_id}`).then(()=>{
+      alert('Job is removed.');
+      closeModal();
+    })
+  }
 
   return (
     <div className="form jobform jobform-edit">
@@ -72,11 +88,11 @@ const Jobform = props => {
       <form>
         <div className="input-wrapper">
           <label htmlFor="form-job-title">Job Title <span className="color-primary">*</span></label>
-          <input id="form-job-title" className="form-input" type="text" name="title" value={formValue.title} onChange={handleChange} />
+          <input id="form-job-title" required className="form-input" type="text" name="title" value={formValue.title} onChange={handleChange} />
         </div>
         <div className="input-wrapper">
           <label htmlFor="form-job-name">Client Name <span className="color-primary">*</span></label>
-          <input id="form-job-name" className="form-input" type="text" name="name" value={formValue.name} onChange={handleChange} />
+          <input id="form-job-name" required className="form-input" type="text" name="name" value={formValue.name} onChange={handleChange} />
         </div>
         <div className="input-wrapper">
           <label htmlFor="form-job-status">Status <span className="color-primary">*</span></label>
@@ -87,18 +103,21 @@ const Jobform = props => {
           </span>
         </div>
         <div className="input-wrapper">
-          <label htmlFor="form-job-phone">Phone <span className="color-primary">*</span></label>
+          <label htmlFor="form-job-phone">Phone</label>
           <input id="form-job-phone" className="form-input" type="text" name="phone" value={formValue.phone} onChange={handleChange} />
         </div>
         <div className="input-wrapper">
-          <label htmlFor="form-job-email">Email <span className="color-primary">*</span></label>
+          <label htmlFor="form-job-email">Email</label>
           <input id="form-job-email" className="form-input" type="text" name="email" value={formValue.email} onChange={handleChange} />
         </div>
         <div className="input-wrapper">
-          <label htmlFor="form-job-note">Note <span className="color-primary">*</span></label>
+          <label htmlFor="form-job-note">Note</label>
           <textarea id="form-job-note" className="form-input" name="note" maxLength="100" value={formValue.note} onChange={handleChange} />
         </div>
-        <button type="submit" className="button button-submit" onClick={submitForm}>Submit</button>
+        {isEdit && (
+          <button className="button button-remove" onClick={removeJob}>Remove</button>
+        )}
+        <button className="button button-submit" onClick={(e)=>checkData(e)}>Submit</button>
       </form>
     </div>
   )
